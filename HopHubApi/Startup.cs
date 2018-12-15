@@ -23,7 +23,7 @@ namespace HopHubApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var hostname = Environment.GetEnvironmentVariable("SQLSERVER_HOST") ?? "localhost";
-            var password = Environment.GetEnvironmentVariable("SQLSERVER_SA_PASSWORD") ?? "Testing123";
+            var password = Environment.GetEnvironmentVariable("SQLSERVER_SA_PASSWORD");
             var connString = $"Data Source={hostname};Initial Catalog=HopHub;User ID=sa;Password={password};";
 
             services.AddDbContext<ApiContext>(options => options.UseSqlServer(connString));
