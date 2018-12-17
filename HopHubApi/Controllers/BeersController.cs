@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using HopHubApi.Models;
+using HopHubApi.Services;
+using System.Threading.Tasks;
+using System;
 
 namespace HopHubApi.Controllers
 {
@@ -9,78 +12,86 @@ namespace HopHubApi.Controllers
     public class BeersController : Controller
     {
         private readonly ApiContext _context;
+        private readonly IBeersService _beersService;
 
-        public BeersController(ApiContext context)
+        public BeersController(ApiContext context, IBeersService beersService)
         {
             _context = context;
+            _beersService = beersService;
         }
 
         [HttpGet]
-        public ActionResult<List<Beer>> GetAll()
+        public async Task<ActionResult<List<Beer>>> GetAll()
         {
-            return _context.Beers.ToList();
+            return await _beersService.GetAllAsync();
         }
 
         [HttpGet("{id}", Name = "GetBeer")]
-        public ActionResult<Beer> GetById(long id)
+        public async Task<ActionResult<Beer>> GetById(long id)
         {
-            var beer = _context.Beers.Find(id);
+            var beer = await _beersService.GetByIdAsync(id);
 
             return beer == null ? (ActionResult<Beer>)NotFound() : (ActionResult<Beer>)beer;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]Beer beer)
+        public async Task<IActionResult> Create([FromBody]Beer beer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Beers.Add(beer);
-            _context.SaveChanges();
-
-            return CreatedAtRoute("GetBeer", new { id = beer.Id }, beer);
+            try
+            {
+                await _beersService.CreateAsync(beer);
+                return CreatedAtRoute("GetBeer", new { id = beer.Id }, beer);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500);
+            }
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, [FromBody]Beer beerUpdate)
+        public async Task<IActionResult> Update(long id, [FromBody]Beer beerUpdate)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var beer = _context.Beers.Find(id);
-
-            if (beer == null)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            beer.Name = beerUpdate.Name;
-            beer.Style = beerUpdate.Style;
-            beer.Brewery = beerUpdate.Brewery;
-            beer.Abv = beerUpdate.Abv;
-
-            _context.Beers.Update(beer);
-            _context.SaveChanges();
-
-            return NoContent();
+            try
+            {
+                await _beersService.UpdateAsync(id, beerUpdate);
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                if (e is KeyNotFoundException)
+                {
+                    return NotFound();
+                }
+                return StatusCode(500);
+            }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            var beer = _context.Beers.Find(id);
-
-            if (beer == null)
+            try
             {
-                return NotFound();
+                await _beersService.DeleteAsync(id);
+                return NoContent();
             }
-
-            _context.Beers.Remove(beer);
-            _context.SaveChanges();
-
-            return NoContent();
+            catch (Exception e)
+            {
+                if (e is KeyNotFoundException)
+                {
+                    return NotFound();
+                }
+                return StatusCode(500);
+            }
         }
     }
 }

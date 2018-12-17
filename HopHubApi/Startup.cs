@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using HopHubApi.Models;
 using Microsoft.EntityFrameworkCore;
+using HopHubApi.Services;
 
 namespace HopHubApi
 {
@@ -27,6 +28,7 @@ namespace HopHubApi
             var connString = $"Data Source={hostname};Initial Catalog=HopHub;User ID=sa;Password={password};";
 
             services.AddDbContext<ApiContext>(options => options.UseSqlServer(connString));
+            services.AddTransient<IBeersService, BeersService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
