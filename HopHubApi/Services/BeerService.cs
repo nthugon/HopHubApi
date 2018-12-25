@@ -1,38 +1,44 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HopHubApi.Models;
+using HopHubApi.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace HopHubApi.Services
 {
-    public class BeersService : IBeersService
+    public class BeerService : IBeerService
     {
-        private readonly ApiContext _context;
+        private readonly IBeerRepository _beerRepository;
 
-        public BeersService(ApiContext context)
+        public BeerService(IBeerRepository beerRepository)
         {
-            _context = context;
+            _beerRepository = beerRepository;
         }
         public async Task<List<Beer>> GetAllAsync()
         {
-            return await _context.Beers.ToListAsync();    
+            return await _beerRepository.GetAllAsync();    
         }
 
         public async Task<Beer> GetByIdAsync(long id)
         {
-            return await _context.Beers.FindAsync(id);
-            
+            var beer = await _beerRepository.GetByIdAsync(id);
+
+            if (beer == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return beer;
         }
 
         public async Task CreateAsync(Beer beer)
         {
-            _context.Beers.Add(beer);
-            await _context.SaveChangesAsync();
+            await _beerRepository.CreateAsync(beer);
         }
 
         public async Task UpdateAsync(long id, Beer beerUpdate)
         {
-            var beer = await GetByIdAsync(id);
+            var beer = await _beerRepository.GetByIdAsync(id);
 
             if (beer == null)
             {
@@ -44,22 +50,19 @@ namespace HopHubApi.Services
             beer.Brewery = beerUpdate.Brewery;
             beer.Abv = beerUpdate.Abv;
 
-            _context.Beers.Update(beer);
-            await _context.SaveChangesAsync();
+            await _beerRepository.UpdateAsync(beer);
         }
 
         public async Task DeleteAsync(long id)
         {
-            var beer = await GetByIdAsync(id);
+            var beer = await _beerRepository.GetByIdAsync(id);
 
             if (beer == null)
             {
                 throw new KeyNotFoundException();
             }
 
-            _context.Beers.Remove(beer);
-            await _context.SaveChangesAsync();
-        }
-        
+            await _beerRepository.DeleteAsync(beer);
+        }        
     }
 }

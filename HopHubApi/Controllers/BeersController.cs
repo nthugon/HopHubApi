@@ -11,27 +11,34 @@ namespace HopHubApi.Controllers
     [Route("api/[controller]")]
     public class BeersController : Controller
     {
-        private readonly ApiContext _context;
-        private readonly IBeersService _beersService;
+        private readonly IBeerService _beerService;
 
-        public BeersController(ApiContext context, IBeersService beersService)
+        public BeersController(IBeerService beerService)
         {
-            _context = context;
-            _beersService = beersService;
+            _beerService = beerService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Beer>>> GetAll()
         {
-            return await _beersService.GetAllAsync();
+            return await _beerService.GetAllAsync();
         }
 
         [HttpGet("{id}", Name = "GetBeer")]
         public async Task<ActionResult<Beer>> GetById(long id)
         {
-            var beer = await _beersService.GetByIdAsync(id);
-
-            return beer == null ? (ActionResult<Beer>)NotFound() : (ActionResult<Beer>)beer;
+            try
+            {
+                return await _beerService.GetByIdAsync(id);
+            }
+            catch(Exception e)
+            {
+                if (e is KeyNotFoundException)
+                {
+                    return NotFound();
+                }
+                return StatusCode(500);
+            }
         }
 
         [HttpPost]
@@ -44,7 +51,7 @@ namespace HopHubApi.Controllers
 
             try
             {
-                await _beersService.CreateAsync(beer);
+                await _beerService.CreateAsync(beer);
                 return CreatedAtRoute("GetBeer", new { id = beer.Id }, beer);
             }
             catch (Exception e)
@@ -63,7 +70,7 @@ namespace HopHubApi.Controllers
 
             try
             {
-                await _beersService.UpdateAsync(id, beerUpdate);
+                await _beerService.UpdateAsync(id, beerUpdate);
                 return NoContent();
             }
             catch (Exception e)
@@ -81,7 +88,7 @@ namespace HopHubApi.Controllers
         {
             try
             {
-                await _beersService.DeleteAsync(id);
+                await _beerService.DeleteAsync(id);
                 return NoContent();
             }
             catch (Exception e)

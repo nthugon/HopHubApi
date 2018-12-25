@@ -4,7 +4,7 @@ using HopHubApi.Models;
 
 namespace HopHubApi.Services
 {
-    public interface IBeersService
+    public interface IBeerService
     {
          Task<List<Beer>> GetAllAsync();
          Task<Beer> GetByIdAsync(long id);
