@@ -19,13 +19,13 @@ namespace HopHubApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Beer>>> GetAll()
+        public async Task<ActionResult<List<Beer>>> GetAllAsync()
         {
             return await _beerService.GetAllAsync();
         }
 
         [HttpGet("{id}", Name = "GetBeer")]
-        public async Task<ActionResult<Beer>> GetById(long id)
+        public async Task<ActionResult<Beer>> GetByIdAsync(long id)
         {
             try
             {
