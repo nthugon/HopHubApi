@@ -4,6 +4,7 @@ using HopHubApi.Controllers;
 using HopHubApi.Services;
 using System.Threading.Tasks;
 using System;
+using HopHubApi.Models;
 
 namespace HopHubApi.Tests.Controllers
 {
@@ -13,6 +14,13 @@ namespace HopHubApi.Tests.Controllers
         private IBeerService _beerService;
         private BeersController _controller;
         private readonly long _beerId = 1;
+        private readonly Beer _beer = new Beer
+        {
+            Name = "Beer Name",
+            Brewery = "Test Brewery",
+            Style = "Test Beer",
+            Abv = 4.5m
+        };
 
         [SetUp]
         public void Setup()
@@ -35,6 +43,15 @@ namespace HopHubApi.Tests.Controllers
             await _controller.GetByIdAsync(_beerId);
 
             await _beerService.Received(1).GetByIdAsync(_beerId);
+        }
+
+        [Test]
+        public async Task CreateAsync_WhenCalledWithValidBeer_CallsBeerServiceCreateAsync()
+        {
+            await _controller.CreateAsync(_beer);
+
+            await _beerService.Received(1).CreateAsync(_beer);
+
         }
 
     }

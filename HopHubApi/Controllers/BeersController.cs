@@ -42,7 +42,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]Beer beer)
+        public async Task<IActionResult> CreateAsync([FromBody]Beer beer)
         {
             if (!ModelState.IsValid)
             {
@@ -61,7 +61,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(long id, [FromBody]Beer beerUpdate)
+        public async Task<IActionResult> UpdateAsync(long id, [FromBody]Beer beerUpdate)
         {
             if (!ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> DeleteAsync(long id)
         {
             try
             {
