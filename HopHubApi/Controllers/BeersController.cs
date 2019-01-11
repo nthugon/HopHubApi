@@ -42,7 +42,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody]Beer beer)
+        public async Task<ActionResult<Beer>> CreateAsync([FromBody]Beer beer)
         {
             if (!ModelState.IsValid)
             {

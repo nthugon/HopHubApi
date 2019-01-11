@@ -1,10 +1,13 @@
 using NUnit.Framework;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using HopHubApi.Controllers;
 using HopHubApi.Services;
 using System.Threading.Tasks;
 using System;
 using HopHubApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace HopHubApi.Tests.Controllers
 {
@@ -48,10 +51,20 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task CreateAsync_WhenCalledWithValidBeer_CallsBeerServiceCreateAsync()
         {
-            await _controller.CreateAsync(_beer);
+            var response = await _controller.CreateAsync(_beer);
 
             await _beerService.Received(1).CreateAsync(_beer);
+        }
 
+        [Test]
+        public async Task CreateAsync_WhenBeerServiceThrows_Returns500()
+        {
+            _beerService.CreateAsync(_beer).Throws(new Exception("blah"));
+
+            var response = await _controller.CreateAsync(_beer);
+            var objResult = response.Result as StatusCodeResult;
+
+            Assert.AreEqual((HttpStatusCode)objResult.StatusCode, HttpStatusCode.InternalServerError);
         }
 
     }
