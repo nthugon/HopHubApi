@@ -61,7 +61,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(long id, [FromBody]Beer beerUpdate)
+        public async Task<ActionResult> UpdateAsync(long id, [FromBody]Beer beerUpdate)
         {
             if (!ModelState.IsValid)
             {

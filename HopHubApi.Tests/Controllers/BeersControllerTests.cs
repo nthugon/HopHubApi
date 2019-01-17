@@ -8,6 +8,7 @@ using System;
 using HopHubApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Collections.Generic;
 
 namespace HopHubApi.Tests.Controllers
 {
@@ -49,9 +50,20 @@ namespace HopHubApi.Tests.Controllers
         }
 
         [Test]
+        public async Task GetByIdAsync_WhenCalledWithInvalidId_Returns404()
+        {
+            _beerService.GetByIdAsync(_beerId).Throws(new KeyNotFoundException("No beer found with this id"));
+
+            var response = await _controller.GetByIdAsync(_beerId);
+            var objResult = response.Result as StatusCodeResult;
+
+            Assert.AreEqual((HttpStatusCode)objResult.StatusCode, HttpStatusCode.NotFound);
+        }
+
+        [Test]
         public async Task CreateAsync_WhenCalledWithValidBeer_CallsBeerServiceCreateAsync()
         {
-            var response = await _controller.CreateAsync(_beer);
+            await _controller.CreateAsync(_beer);
 
             await _beerService.Received(1).CreateAsync(_beer);
         }
@@ -65,6 +77,25 @@ namespace HopHubApi.Tests.Controllers
             var objResult = response.Result as StatusCodeResult;
 
             Assert.AreEqual((HttpStatusCode)objResult.StatusCode, HttpStatusCode.InternalServerError);
+        }
+
+        [Test]
+        public async Task UpdateAsync_WhenCalledWithValidBeer_CallsBeerServiceUpdateAsync()
+        {
+            await _controller.UpdateAsync(_beer.Id, _beer);
+
+            await _beerService.Received(1).UpdateAsync(_beer.Id, _beer);
+        }
+
+        [Test]
+        public async Task UpdateAsync_WhenCalledWithInvalidBeer_Returns404()
+        {
+            _beerService.UpdateAsync(_beer.Id, _beer).Throws(new KeyNotFoundException("No beer found with this id"));
+
+            var response = await _controller.UpdateAsync(_beer.Id, _beer);
+            var responseStatusCode = response as StatusCodeResult;
+
+            Assert.AreEqual((HttpStatusCode)responseStatusCode.StatusCode, HttpStatusCode.NotFound);
         }
 
     }
