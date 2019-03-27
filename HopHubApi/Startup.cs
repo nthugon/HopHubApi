@@ -24,13 +24,23 @@ namespace HopHubApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var hostname = Environment.GetEnvironmentVariable("SQLSERVER_HOST") ?? "localhost";
-            var password = Environment.GetEnvironmentVariable("SQLSERVER_SA_PASSWORD");
-            var connString = $"Data Source={hostname};Initial Catalog=HopHub;User ID=sa;Password={password};";
+            // SQL SERVER DOCKER CONTAINER
 
-            services.AddDbContext<ApiContext>(options => options.UseSqlServer(connString));
-            services.AddTransient<IBeerRepository, BeerRepository>();
-            services.AddTransient<IBeerService, BeerService>();
+            //var hostname = Environment.GetEnvironmentVariable("SQLSERVER_HOST") ?? "localhost";
+            //var password = Environment.GetEnvironmentVariable("SQLSERVER_SA_PASSWORD");
+            //var connString = $"Data Source={hostname};Initial Catalog=HopHub;User ID=sa;Password={password};";
+
+            //services.AddDbContext<ApiContext>(options => options.UseSqlServer(connString));
+
+
+            // SQL SERVER EXPRESS ON MY MACHINE
+
+            var connString = @"Server=.\SQLEXPRESS;Database=HopHubDB;Trusted_Connection=True;";
+            services.AddDbContext<ApiContext>(options => options.UseSqlServer(connString))
+                    .AddTransient<IBeerRepository, BeerRepository>()
+                    .AddTransient<IBeerService, BeerService>()
+                    .AddTransient<IReviewService, ReviewService>()
+                    .AddTransient<IReviewRepository, ReviewRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

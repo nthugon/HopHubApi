@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HopHubApi.Models
 {
@@ -13,5 +16,6 @@ namespace HopHubApi.Models
         public string Brewery { get; set; }
         [Required]
         public decimal Abv { get; set; }
+        public ICollection<Review> Reviews { get; set; }
     }
 }

@@ -7,9 +7,11 @@ namespace HopHubApi.Models
         public ApiContext(DbContextOptions<ApiContext> options)
             : base(options)
         {
-            this.Database.EnsureCreated();
+            // only use for docker
+            //this.Database.EnsureCreated();
         }
 
         public DbSet<Beer> Beers { get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }

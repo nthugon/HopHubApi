@@ -9,6 +9,7 @@ using System;
 namespace HopHubApi.Controllers
 {
     [Route("api/[controller]")]
+    //composed without [ApiController] attribute so must use binding source attributes and model validation 
     public class BeersController : Controller
     {
         private readonly IBeerService _beerService;
@@ -25,18 +26,18 @@ namespace HopHubApi.Controllers
         }
 
         [HttpGet("{id}", Name = "GetBeer")]
-        public async Task<ActionResult<Beer>> GetByIdAsync(long id)
+        public async Task<ActionResult<Beer>> GetByIdAsync([FromRoute]long id)
         {
             try
             {
                 return await _beerService.GetByIdAsync(id);
             }
-            catch(Exception e)
+            catch (KeyNotFoundException ex)
             {
-                if (e is KeyNotFoundException)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(500);
             }
         }
@@ -54,7 +55,7 @@ namespace HopHubApi.Controllers
                 await _beerService.CreateAsync(beer);
                 return CreatedAtRoute("GetBeer", new { id = beer.Id }, beer);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 return StatusCode(500);
             }
@@ -73,30 +74,30 @@ namespace HopHubApi.Controllers
                 await _beerService.UpdateAsync(id, beerUpdate);
                 return NoContent();
             }
-            catch (Exception e)
+            catch (KeyNotFoundException ex)
             {
-                if (e is KeyNotFoundException)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(500);
             }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(long id)
+        public async Task<IActionResult> DeleteAsync([FromRoute]long id)
         {
             try
             {
                 await _beerService.DeleteAsync(id);
                 return NoContent();
             }
-            catch (Exception e)
+            catch (KeyNotFoundException ex)
             {
-                if (e is KeyNotFoundException)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(500);
             }
         }
