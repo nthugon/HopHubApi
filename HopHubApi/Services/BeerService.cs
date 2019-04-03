@@ -19,7 +19,7 @@ namespace HopHubApi.Services
             return await _beerRepository.GetAllAsync();    
         }
 
-        public async Task<Beer> GetByIdAsync(long id)
+        public async Task<Beer> GetByIdAsync(int id)
         {
             var beer = await _beerRepository.GetByIdAsync(id);
 
@@ -36,7 +36,7 @@ namespace HopHubApi.Services
             await _beerRepository.CreateAsync(beer);
         }
 
-        public async Task UpdateAsync(long id, Beer beerUpdate)
+        public async Task UpdateAsync(int id, Beer beerUpdate)
         {
             var beer = await _beerRepository.GetByIdAsync(id);
 
@@ -53,7 +53,7 @@ namespace HopHubApi.Services
             await _beerRepository.UpdateAsync(beer);
         }
 
-        public async Task DeleteAsync(long id)
+        public async Task DeleteAsync(int id)
         {
             var beer = await _beerRepository.GetByIdAsync(id);
 

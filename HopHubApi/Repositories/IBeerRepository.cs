@@ -7,7 +7,7 @@ namespace HopHubApi.Repositories
     public interface IBeerRepository
     {
         Task<List<Beer>> GetAllAsync();
-        Task<Beer> GetByIdAsync(long id);
+        Task<Beer> GetByIdAsync(int id);
         Task CreateAsync(Beer beer);
         Task UpdateAsync(Beer beer);
         Task DeleteAsync(Beer beer);         

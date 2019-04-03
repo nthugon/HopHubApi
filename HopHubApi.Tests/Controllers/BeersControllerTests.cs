@@ -17,7 +17,7 @@ namespace HopHubApi.Tests.Controllers
     {
         private IBeerService _beerService;
         private BeersController _controller;
-        private readonly long _beerId = 1;
+        private readonly int _beerId = 1;
         private readonly Beer _beer = new Beer
         {
             Name = "Beer Name",
@@ -82,17 +82,17 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task UpdateAsync_WhenCalledWithValidBeer_CallsBeerServiceUpdateAsync()
         {
-            await _controller.UpdateAsync(_beer.Id, _beer);
+            await _controller.UpdateAsync(_beer.BeerId, _beer);
 
-            await _beerService.Received(1).UpdateAsync(_beer.Id, _beer);
+            await _beerService.Received(1).UpdateAsync(_beer.BeerId, _beer);
         }
 
         [Test]
         public async Task UpdateAsync_WhenCalledWithInvalidBeer_Returns404()
         {
-            _beerService.UpdateAsync(_beer.Id, _beer).Throws(new KeyNotFoundException("No beer found with this id"));
+            _beerService.UpdateAsync(_beer.BeerId, _beer).Throws(new KeyNotFoundException("No beer found with this id"));
 
-            var response = await _controller.UpdateAsync(_beer.Id, _beer);
+            var response = await _controller.UpdateAsync(_beer.BeerId, _beer);
             var responseStatusCode = response as StatusCodeResult;
 
             Assert.AreEqual((HttpStatusCode)responseStatusCode.StatusCode, HttpStatusCode.NotFound);

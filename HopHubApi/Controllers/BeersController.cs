@@ -9,8 +9,11 @@ using System;
 namespace HopHubApi.Controllers
 {
     [Route("api/[controller]")]
-    //composed without [ApiController] attribute so must use binding source attributes and model validation 
-    public class BeersController : Controller
+    // composed without [ApiController] attribute, so we must use binding source attributes and model validation
+
+    // disable warning for unused var
+    #pragma warning disable CS0168 
+    public class BeersController : ControllerBase
     {
         private readonly IBeerService _beerService;
 
@@ -26,7 +29,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpGet("{id}", Name = "GetBeer")]
-        public async Task<ActionResult<Beer>> GetByIdAsync([FromRoute]long id)
+        public async Task<ActionResult<Beer>> GetByIdAsync([FromRoute]int id)
         {
             try
             {
@@ -53,7 +56,7 @@ namespace HopHubApi.Controllers
             try
             {
                 await _beerService.CreateAsync(beer);
-                return CreatedAtRoute("GetBeer", new { id = beer.Id }, beer);
+                return CreatedAtRoute("GetBeer", new { id = beer.BeerId }, beer);
             }
             catch (Exception ex)
             {
@@ -62,7 +65,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAsync(long id, [FromBody]Beer beerUpdate)
+        public async Task<ActionResult> UpdateAsync(int id, [FromBody]Beer beerUpdate)
         {
             if (!ModelState.IsValid)
             {
@@ -85,7 +88,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync([FromRoute]long id)
+        public async Task<IActionResult> DeleteAsync([FromRoute]int id)
         {
             try
             {

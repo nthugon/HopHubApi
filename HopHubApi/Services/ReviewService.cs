@@ -21,7 +21,7 @@ namespace HopHubApi.Services
             return await _reviewRepository.GetAllAsync();
         }
 
-        public async Task<Review> GetByIdAsync(long id)
+        public async Task<Review> GetByIdAsync(int id)
         {
             return await _reviewRepository.GetByIdAsync(id);
         }
@@ -31,7 +31,7 @@ namespace HopHubApi.Services
             await _reviewRepository.CreateAsync(review);
         }
 
-        public async Task<List<Review>> GetByBeerIdAsync(long id)
+        public async Task<List<Review>> GetByBeerIdAsync(int id)
         {
             return await _reviewRepository.GetByBeerIdAsync(id);
         }

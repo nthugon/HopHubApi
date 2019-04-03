@@ -7,9 +7,9 @@ namespace HopHubApi.Services
     public interface IBeerService
     {
          Task<List<Beer>> GetAllAsync();
-         Task<Beer> GetByIdAsync(long id);
+         Task<Beer> GetByIdAsync(int id);
          Task CreateAsync(Beer beer);
-         Task UpdateAsync(long id, Beer beerUpdate);
-         Task DeleteAsync(long id);
+         Task UpdateAsync(int id, Beer beerUpdate);
+         Task DeleteAsync(int id);
     }
 }

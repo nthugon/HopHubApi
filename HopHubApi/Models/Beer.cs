@@ -7,7 +7,7 @@ namespace HopHubApi.Models
 {
     public class Beer
     {
-        public long Id { get; set; }
+        public int BeerId { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

@@ -8,12 +8,12 @@ namespace HopHubApi.Models
 {
     public class Review
     {
-        public long Id { get; set; }
+        public int ReviewId { get; set; }
         [Required]
         public string DrinkAgain { get; set; }
         [Required]
         public string Comments { get; set; }
         [Required]
-        public Beer Beer { get; set; }
+        public int BeerId { get; set; }           
     }
 }

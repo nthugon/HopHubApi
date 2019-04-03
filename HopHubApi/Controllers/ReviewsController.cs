@@ -12,6 +12,9 @@ namespace HopHubApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     // [ApiController] allows us to omit binding source attributes and model validation
+    
+    // disable warning for unused var
+    #pragma warning disable CS0168
     public class ReviewsController : ControllerBase
     {
         private readonly IReviewService _reviewService;
@@ -28,7 +31,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpGet("{id}", Name = "GetReview")]
-        public async Task<ActionResult<Review>> GetByIdAsync(long id)
+        public async Task<ActionResult<Review>> GetByIdAsync(int id)
         {
             try
             {
@@ -45,7 +48,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpGet("/beer/{id}")]
-        public async Task<ActionResult<List<Review>>> GetByBeerIdAsync(long id)
+        public async Task<ActionResult<List<Review>>> GetByBeerIdAsync(int id)
         {
             try
             {
@@ -67,7 +70,7 @@ namespace HopHubApi.Controllers
             try
             {
                 await _reviewService.CreateAsync(review);
-                return CreatedAtRoute("GetReview", new { id = review.Id }, review);
+                return CreatedAtRoute("GetReview", new { id = review.ReviewId }, review);
 
             }
             catch (Exception ex)

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HopHubApi.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20190327173345_AddReviews")]
-    partial class AddReviews
+    [Migration("20190403171000_InitialCreatePC")]
+    partial class InitialCreatePC
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,7 +22,7 @@ namespace HopHubApi.Migrations
 
             modelBuilder.Entity("HopHubApi.Models.Beer", b =>
                 {
-                    b.Property<long>("BeerId")
+                    b.Property<int>("BeerId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -44,11 +44,11 @@ namespace HopHubApi.Migrations
 
             modelBuilder.Entity("HopHubApi.Models.Review", b =>
                 {
-                    b.Property<long>("ReviewId")
+                    b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("BeerId");
+                    b.Property<int>("BeerId");
 
                     b.Property<string>("Comments")
                         .IsRequired();
@@ -65,7 +65,7 @@ namespace HopHubApi.Migrations
 
             modelBuilder.Entity("HopHubApi.Models.Review", b =>
                 {
-                    b.HasOne("HopHubApi.Models.Beer", "Beer")
+                    b.HasOne("HopHubApi.Models.Beer")
                         .WithMany("Reviews")
                         .HasForeignKey("BeerId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -20,7 +20,7 @@ namespace HopHubApi.Migrations
 
             modelBuilder.Entity("HopHubApi.Models.Beer", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("BeerId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -35,18 +35,18 @@ namespace HopHubApi.Migrations
                     b.Property<string>("Style")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("BeerId");
 
                     b.ToTable("Beers");
                 });
 
             modelBuilder.Entity("HopHubApi.Models.Review", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("BeerId");
+                    b.Property<int>("BeerId");
 
                     b.Property<string>("Comments")
                         .IsRequired();
@@ -54,7 +54,7 @@ namespace HopHubApi.Migrations
                     b.Property<string>("DrinkAgain")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("ReviewId");
 
                     b.HasIndex("BeerId");
 
@@ -63,7 +63,7 @@ namespace HopHubApi.Migrations
 
             modelBuilder.Entity("HopHubApi.Models.Review", b =>
                 {
-                    b.HasOne("HopHubApi.Models.Beer", "Beer")
+                    b.HasOne("HopHubApi.Models.Beer")
                         .WithMany("Reviews")
                         .HasForeignKey("BeerId")
                         .OnDelete(DeleteBehavior.Cascade);

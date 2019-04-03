@@ -21,7 +21,7 @@ namespace HopHubApi.Repositories
             return await _context.Reviews.ToListAsync();
         }
 
-        public async Task<Review> GetByIdAsync(long id)
+        public async Task<Review> GetByIdAsync(int id)
         {
             return await _context.Reviews.FindAsync(id);
         }
@@ -32,9 +32,9 @@ namespace HopHubApi.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Review>> GetByBeerIdAsync(long id)
+        public async Task<List<Review>> GetByBeerIdAsync(int id)
         {
-            return await _context.Reviews.Where(x => x.Beer.Id == id).ToListAsync();
+            return await _context.Reviews.Where(x => x.BeerId == id).ToListAsync();
         }
 
         public async Task DeleteAsync(Review review)

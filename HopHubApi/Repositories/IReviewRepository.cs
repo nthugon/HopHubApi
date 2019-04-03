@@ -9,9 +9,9 @@ namespace HopHubApi.Repositories
     public interface IReviewRepository
     {
         Task<List<Review>> GetAllAsync();
-        Task<Review> GetByIdAsync(long id);
+        Task<Review> GetByIdAsync(int id);
         Task CreateAsync(Review review);
-        Task<List<Review>> GetByBeerIdAsync(long id);
+        Task<List<Review>> GetByBeerIdAsync(int id);
         Task DeleteAsync(Review review);
     }
 }

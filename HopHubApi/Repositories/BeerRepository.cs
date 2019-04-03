@@ -15,10 +15,11 @@ namespace HopHubApi.Repositories
 
         public async Task<List<Beer>> GetAllAsync()
         {
-            return await _context.Beers.ToListAsync();
+            return await _context.Beers.Include(b => b.Reviews)
+                                       .ToListAsync();
         }
 
-        public async Task<Beer> GetByIdAsync(long id)
+        public async Task<Beer> GetByIdAsync(int id)
         {
             return await _context.Beers.FindAsync(id);
         }
