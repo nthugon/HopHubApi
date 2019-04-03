@@ -47,7 +47,7 @@ namespace HopHubApi.Controllers
             }
         }
 
-        [HttpGet("/beer/{id}")]
+        [HttpGet("beer/{id}")]
         public async Task<ActionResult<List<Review>>> GetByBeerIdAsync(int id)
         {
             try
