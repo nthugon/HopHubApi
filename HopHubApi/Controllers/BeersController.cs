@@ -28,6 +28,13 @@ namespace HopHubApi.Controllers
             return await _beerService.GetAllAsync();
         }
 
+        [HttpGet("reviews")]
+        public async Task<ActionResult<List<Beer>>> GetAllWithReviewsAsync()
+        {
+            return await _beerService.GetAllWithReviewsAsync();
+        }
+
+
         [HttpGet("{id}", Name = "GetBeer")]
         public async Task<ActionResult<Beer>> GetByIdAsync([FromRoute]int id)
         {
