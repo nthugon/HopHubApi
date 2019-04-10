@@ -30,7 +30,7 @@ namespace HopHubApi.Controllers
             return await _reviewService.GetAllAsync();
         }
 
-        [HttpGet("{id}", Name = "GetReview")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Review>> GetByIdAsync(int id)
         {
             try
@@ -70,15 +70,12 @@ namespace HopHubApi.Controllers
             try
             {
                 await _reviewService.CreateAsync(review);
-                return CreatedAtRoute("GetReview", new { id = review.ReviewId }, review);
-
+                return CreatedAtRoute(nameof(GetByIdAsync), new { id = review.ReviewId }, review);
             }
             catch (Exception ex)
             {
                 return StatusCode(500);
             }
-
-
         }
     }
 }

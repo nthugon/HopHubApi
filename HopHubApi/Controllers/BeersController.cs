@@ -10,6 +10,7 @@ namespace HopHubApi.Controllers
 {
     [Route("api/[controller]")]
     // composed without [ApiController] attribute, so we must use binding source attributes and model validation
+    // using CreatedAtRoute for endpoint must be named
 
     // disable warning for unused var
     #pragma warning disable CS0168 
