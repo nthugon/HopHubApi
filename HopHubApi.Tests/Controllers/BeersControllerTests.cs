@@ -17,9 +17,9 @@ namespace HopHubApi.Tests.Controllers
     {
         private IBeerService _beerService;
         private BeersController _controller;
-        private readonly int _beerId = 1;
         private readonly Beer _beer = new Beer
         {
+            BeerId = 1,
             Name = "Beer Name",
             Brewery = "Test Brewery",
             Style = "Test Beer",
@@ -34,7 +34,7 @@ namespace HopHubApi.Tests.Controllers
         }
 
         [Test]
-        public async Task GetAll_WhenCalled_CallsBeerServiceGetAllAsync()
+        public async Task GetAllAsync_WhenCalled_CallsBeerServiceGetAllAsync()
         {
             await _controller.GetAllAsync();
 
@@ -42,22 +42,30 @@ namespace HopHubApi.Tests.Controllers
         }
 
         [Test]
+        public async Task GetAllWithReviewsAsync_WhenCalled_CallsBeerServiceGetAllWithReviewsAsync()
+        {
+            await _controller.GetAllWithReviewsAsync();
+
+            await _beerService.Received(1).GetAllWithReviewsAsync();
+        }
+
+        [Test]
         public async Task GetByIdAsync_WhenCalled_CallsBeerServiceGetByIdAsync()
         {
-            await _controller.GetByIdAsync(_beerId);
+            await _controller.GetByIdAsync(_beer.BeerId);
 
-            await _beerService.Received(1).GetByIdAsync(_beerId);
+            await _beerService.Received(1).GetByIdAsync(_beer.BeerId);
         }
 
         [Test]
         public async Task GetByIdAsync_WhenCalledWithInvalidId_Returns404()
         {
-            _beerService.GetByIdAsync(_beerId).Throws(new KeyNotFoundException("No beer found with this id"));
+            _beerService.GetByIdAsync(_beer.BeerId).Throws(new KeyNotFoundException());
 
-            var response = await _controller.GetByIdAsync(_beerId);
-            var objResult = response.Result as StatusCodeResult;
+            var response = await _controller.GetByIdAsync(_beer.BeerId);
+            var statusCodeResult = response.Result as StatusCodeResult;
 
-            Assert.AreEqual((HttpStatusCode)objResult.StatusCode, HttpStatusCode.NotFound);
+            Assert.AreEqual((HttpStatusCode)statusCodeResult.StatusCode, HttpStatusCode.NotFound);
         }
 
         [Test]
@@ -74,9 +82,9 @@ namespace HopHubApi.Tests.Controllers
             _beerService.CreateAsync(_beer).Throws(new Exception("blah"));
 
             var response = await _controller.CreateAsync(_beer);
-            var objResult = response.Result as StatusCodeResult;
+            var statusCodeResult = response.Result as StatusCodeResult;
 
-            Assert.AreEqual((HttpStatusCode)objResult.StatusCode, HttpStatusCode.InternalServerError);
+            Assert.AreEqual((HttpStatusCode)statusCodeResult.StatusCode, HttpStatusCode.InternalServerError);
         }
 
         [Test]
@@ -90,13 +98,31 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task UpdateAsync_WhenCalledWithInvalidBeer_Returns404()
         {
-            _beerService.UpdateAsync(_beer.BeerId, _beer).Throws(new KeyNotFoundException("No beer found with this id"));
+            _beerService.UpdateAsync(_beer.BeerId, _beer).Throws(new KeyNotFoundException());
 
             var response = await _controller.UpdateAsync(_beer.BeerId, _beer);
-            var responseStatusCode = response as StatusCodeResult;
+            var statusCodeResult = response as StatusCodeResult;
 
-            Assert.AreEqual((HttpStatusCode)responseStatusCode.StatusCode, HttpStatusCode.NotFound);
+            Assert.AreEqual((HttpStatusCode)statusCodeResult.StatusCode, HttpStatusCode.NotFound);
         }
 
+        [Test]
+        public async Task DeleteAsync_WhenCalledWithValidId_CallsBeerServiceDeleteAsync()
+        {
+            await _controller.DeleteAsync(_beer.BeerId);
+
+            await _beerService.Received(1).DeleteAsync(_beer.BeerId);
+        }
+
+        [Test]
+        public async Task DeleteAsync_WhenCalledWithInvalidId_Returns404()
+        {
+            _beerService.DeleteAsync(_beer.BeerId).Throws(new KeyNotFoundException());
+
+            var response = await _controller.DeleteAsync(_beer.BeerId);
+            var statusCodeResult = response as StatusCodeResult;
+
+            Assert.AreEqual((HttpStatusCode)statusCodeResult.StatusCode, HttpStatusCode.NotFound);
+        }
     }
 }
