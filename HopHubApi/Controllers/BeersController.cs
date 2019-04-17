@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using HopHubApi.Models;
 using HopHubApi.Services;
 using System.Threading.Tasks;
 using System;
+using Serilog;
 
 namespace HopHubApi.Controllers
 {
@@ -17,10 +17,12 @@ namespace HopHubApi.Controllers
     public class BeersController : ControllerBase
     {
         private readonly IBeerService _beerService;
+        private readonly ILogger _logger;
 
-        public BeersController(IBeerService beerService)
+        public BeersController(IBeerService beerService, ILogger logger)
         {
             _beerService = beerService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -32,6 +34,7 @@ namespace HopHubApi.Controllers
         [HttpGet("reviews")]
         public async Task<ActionResult<List<Beer>>> GetAllWithReviewsAsync()
         {
+            _logger.Information("Request received for all beers with reviews");
             return await _beerService.GetAllWithReviewsAsync();
         }
 

@@ -9,6 +9,7 @@ using HopHubApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Collections.Generic;
+using Serilog;
 
 namespace HopHubApi.Tests.Controllers
 {
@@ -16,6 +17,7 @@ namespace HopHubApi.Tests.Controllers
     public class BeersControllerTests
     {
         private IBeerService _beerService;
+        private ILogger _logger;
         private BeersController _controller;
         private readonly Beer _beer = new Beer
         {
@@ -30,7 +32,7 @@ namespace HopHubApi.Tests.Controllers
         public void Setup()
         {
             _beerService = Substitute.For<IBeerService>();
-            _controller = new BeersController(_beerService);
+            _controller = new BeersController(_beerService, _logger);
         }
 
         [Test]

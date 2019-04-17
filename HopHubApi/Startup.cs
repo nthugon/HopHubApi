@@ -8,6 +8,8 @@ using HopHubApi.Models;
 using Microsoft.EntityFrameworkCore;
 using HopHubApi.Services;
 using HopHubApi.Repositories;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace HopHubApi
 {
@@ -15,6 +17,7 @@ namespace HopHubApi
     {
         public Startup(IConfiguration configuration)
         {
+            //Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
             Configuration = configuration;
         }
 
@@ -40,11 +43,14 @@ namespace HopHubApi
                     .AddTransient<IBeerRepository, BeerRepository>()
                     .AddTransient<IBeerService, BeerService>()
                     .AddTransient<IReviewService, ReviewService>()
-                    .AddTransient<IReviewRepository, ReviewRepository>();
+                    .AddTransient<IReviewRepository, ReviewRepository>()
+                    .AddSingleton<Serilog.ILogger>(x => new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger());
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddSerilog();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
