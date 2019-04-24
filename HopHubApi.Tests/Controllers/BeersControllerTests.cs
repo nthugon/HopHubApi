@@ -32,6 +32,7 @@ namespace HopHubApi.Tests.Controllers
         public void Setup()
         {
             _beerService = Substitute.For<IBeerService>();
+            _logger = Substitute.For<ILogger>();
             _controller = new BeersController(_beerService, _logger);
         }
 
