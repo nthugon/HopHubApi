@@ -28,7 +28,18 @@ namespace HopHubApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Beer>>> GetAllAsync()
         {
-            return await _beerService.GetAllAsync();
+            try
+            {
+                _logger.Information("Getting all beers.");
+                return await _beerService.GetAllAsync();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Request to get all beers failed.");
+                return StatusCode(500);
+            }
+            
         }
 
         [HttpGet("reviews")]
@@ -118,7 +129,7 @@ namespace HopHubApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync([FromRoute]int id)
+        public async Task<ActionResult> DeleteAsync([FromRoute]int id)
         {
             try
             {
