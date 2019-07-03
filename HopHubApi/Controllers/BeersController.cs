@@ -8,6 +8,10 @@ using Serilog;
 
 namespace HopHubApi.Controllers
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Handles CRUD requests related to Beers.
+    /// </summary>
     [Route("api/[controller]")]
     // composed without [ApiController] attribute, so we must use binding source attributes and model validation
     // using CreatedAtRoute for endpoint must be named
@@ -19,12 +23,23 @@ namespace HopHubApi.Controllers
         private readonly IBeerService _beerService;
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Constructor for the BeersController
+        /// </summary>
+        /// <param name="beerService">Business logic for Beer CRUD operations.</param>
+        /// <param name="logger">Logging service.</param>
         public BeersController(IBeerService beerService, ILogger logger)
         {
             _beerService = beerService;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gets all of the Beers.
+        /// </summary>
+        /// <returns>List of Beers.</returns>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
         [HttpGet]
         public async Task<ActionResult<List<Beer>>> GetAllAsync()
         {
@@ -42,6 +57,12 @@ namespace HopHubApi.Controllers
             
         }
 
+        /// <summary>
+        /// Gets all of the the Beers and their Reviews.
+        /// </summary>
+        /// <returns>List of Beers containing their reviews.</returns>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
         [HttpGet("reviews")]
         public async Task<ActionResult<List<Beer>>> GetAllWithReviewsAsync()
         {
@@ -57,6 +78,14 @@ namespace HopHubApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets requested Beer by Id.
+        /// </summary>
+        /// <param name="id">Uniuque indentifier of the Beer.</param>
+        /// <returns>The Beer requested.</returns>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         [HttpGet("{id}", Name = "GetBeer")]
         public async Task<ActionResult<Beer>> GetByIdAsync([FromRoute]int id)
         {
@@ -77,6 +106,14 @@ namespace HopHubApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a Beer from the information sent in the request.
+        /// </summary>
+        /// <param name="beer">Model representing the Beer's properties.</param>
+        /// <returns>The Beer created.</returns>
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpPost]
         public async Task<ActionResult<Beer>> CreateAsync([FromBody]Beer beer)
         {
@@ -100,6 +137,15 @@ namespace HopHubApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the properties of a Beer.
+        /// </summary>
+        /// <param name="id">Uniuque indentifier of the Beer.</param>
+        /// <param name="beerUpdate">Model representing the Beer's properties.</param>
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAsync(int id, [FromBody]Beer beerUpdate)
         {
@@ -128,6 +174,13 @@ namespace HopHubApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a Beer.
+        /// </summary>
+        /// <param name="id">Uniuque indentifier of the Beer.</param>
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync([FromRoute]int id)
         {

@@ -4,5 +4,57 @@
         <name>HopHubApi</name>
     </assembly>
     <members>
+        <member name="T:HopHubApi.Controllers.BeersController">
+            <inheritdoc />
+            <summary>
+            Handles CRUD requests related to Beers.
+            </summary>
+        </member>
+        <member name="M:HopHubApi.Controllers.BeersController.#ctor(HopHubApi.Services.IBeerService,Serilog.ILogger)">
+            <summary>
+            Constructor for the BeersController
+            </summary>
+            <param name="beerService">Business logic for Beer CRUD operations.</param>
+            <param name="logger">Logging service.</param>
+        </member>
+        <member name="M:HopHubApi.Controllers.BeersController.GetAllAsync">
+            <summary>
+            Gets all of the Beers.
+            </summary>
+            <returns>List of Beers.</returns>
+        </member>
+        <member name="M:HopHubApi.Controllers.BeersController.GetAllWithReviewsAsync">
+            <summary>
+            Gets all of the the Beers and their Reviews.
+            </summary>
+            <returns>List of Beers containing their reviews.</returns>
+        </member>
+        <member name="M:HopHubApi.Controllers.BeersController.GetByIdAsync(System.Int32)">
+            <summary>
+            Gets requested Beer by Id.
+            </summary>
+            <param name="id">Uniuque indentifier of the Beer.</param>
+            <returns>The Beer requested.</returns>
+        </member>
+        <member name="M:HopHubApi.Controllers.BeersController.CreateAsync(HopHubApi.Models.Beer)">
+            <summary>
+            Creates a Beer from the information sent in the request.
+            </summary>
+            <param name="beer">Model representing the Beer's properties.</param>
+            <returns>The Beer created.</returns>
+        </member>
+        <member name="M:HopHubApi.Controllers.BeersController.UpdateAsync(System.Int32,HopHubApi.Models.Beer)">
+            <summary>
+            Updates the properties of a Beer.
+            </summary>
+            <param name="id">Uniuque indentifier of the Beer.</param>
+            <param name="beerUpdate">Model representing the Beer's properties.</param>
+        </member>
+        <member name="M:HopHubApi.Controllers.BeersController.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes a Beer.
+            </summary>
+            <param name="id">Uniuque indentifier of the Beer.</param>
+        </member>
     </members>
 </doc>
