@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using HopHubApi.Services;
 using HopHubApi.Repositories;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace HopHubApi
 {
@@ -45,6 +47,20 @@ namespace HopHubApi
                     .AddTransient<IReviewService, ReviewService>()
                     .AddTransient<IReviewRepository, ReviewRepository>()
                     .AddSingleton<Serilog.ILogger>(x => new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger());
+
+            var info = new Info()
+            {
+                Title = "HopHub API",
+                Version = "v1",
+                Description = "CRUD Api for managing Beers and Reviews for the HopHub web app."
+            };
+            services.AddSwaggerGen(
+                options =>
+                {
+                    options.SwaggerDoc("v1", info);
+                    var internalModelsPath = Path.Combine(AppContext.BaseDirectory, "HopHubApi.xml");
+                    options.IncludeXmlComments(internalModelsPath);
+                });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -62,6 +78,12 @@ namespace HopHubApi
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("../swagger/v1/swagger.json", "API");
+            });
         }
     }
 }
