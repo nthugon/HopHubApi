@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using HopHubApi.Models;
 using HopHubApi.Repositories;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HopHubApi.Services
 {
@@ -36,9 +35,9 @@ namespace HopHubApi.Services
             return beer;
         }
 
-        public async Task CreateAsync(Beer beer)
+        public async Task<Beer> CreateAsync(Beer beer)
         {
-            await _beerRepository.CreateAsync(beer);
+            return await _beerRepository.CreateAsync(beer);
         }
 
         public async Task UpdateAsync(int id, Beer beerUpdate)

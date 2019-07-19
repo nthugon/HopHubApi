@@ -9,7 +9,7 @@ namespace HopHubApi.Repositories
         Task<List<Beer>> GetAllAsync();
         Task<List<Beer>> GetAllWithReviewsAsync();
         Task<Beer> GetByIdAsync(int id);
-        Task CreateAsync(Beer beer);
+        Task<Beer> CreateAsync(Beer beer);
         Task UpdateAsync(Beer beer);
         Task DeleteAsync(Beer beer);         
     }

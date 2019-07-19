@@ -47,14 +47,12 @@ namespace HopHubApi.Controllers
             {
                 _logger.Information("Getting all beers.");
                 return await _beerService.GetAllAsync();
-
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "Request to get all beers failed.");
                 return StatusCode(500);
-            }
-            
+            }            
         }
 
         /// <summary>
@@ -126,9 +124,11 @@ namespace HopHubApi.Controllers
             try
             {
                 _logger.Information($"Creating beer with name: {beer.Name}.");
-                await _beerService.CreateAsync(beer);
+                // uses return from db to send in the response
+                beer = await _beerService.CreateAsync(beer);
                 _logger.Information($"Successfully created beer with name: {beer.Name}.");
-                return CreatedAtRoute("GetBeer", new { id = beer.BeerId }, beer);
+                return Created($"api/beers/{beer.BeerId}", beer);
+
             }
             catch (Exception ex)
             {

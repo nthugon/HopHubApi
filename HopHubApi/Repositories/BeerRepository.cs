@@ -1,50 +1,45 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HopHubApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace HopHubApi.Repositories
 {
     public class BeerRepository : IBeerRepository
     {
-        private readonly ApiContext _context;
-        public BeerRepository(ApiContext context)
+        private readonly IHopHubDatabase _context;
+        public BeerRepository(IHopHubDatabase context)
         {
             _context = context;
         }
 
         public async Task<List<Beer>> GetAllAsync()
         {
-            return await _context.Beers.ToListAsync();
+            return await _context.GetAllBeersAsync();
         }
 
         public async Task<List<Beer>> GetAllWithReviewsAsync()
         {
-            return await _context.Beers.Include(b => b.Reviews)
-                            .ToListAsync();
+            return await _context.GetAllBeersWithReviewsAsync();
         }
 
         public async Task<Beer> GetByIdAsync(int id)
         {
-            return await _context.Beers.FindAsync(id);
+            return await _context.GetBeerByIdAsync(id);
         }
 
-        public async Task CreateAsync(Beer beer)
+        public async Task<Beer> CreateAsync(Beer beer)
         {
-            _context.Beers.Add(beer);
-            await _context.SaveChangesAsync();
+            return await _context.CreateBeerAsync(beer);
         }
 
         public async Task UpdateAsync(Beer beer)
         {
-            _context.Beers.Update(beer);
-            await _context.SaveChangesAsync();
+            await _context.UpdateBeerAsync(beer);
         }
 
         public async Task DeleteAsync(Beer beer)
         {
-            _context.Beers.Remove(beer);
-            await _context.SaveChangesAsync();
-        }        
+            await _context.DeleteBeerAsync(beer);
+        }
     }
 }

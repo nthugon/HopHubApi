@@ -172,6 +172,8 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task CreateAsync_WhenCalledWithValidBeer_CallsBeerServiceCreateAsync()
         {
+            _beerService.CreateAsync(_beer).Returns(_beer);
+
             await _controller.CreateAsync(_beer);
 
             await _beerService.Received(1).CreateAsync(_beer);
@@ -180,6 +182,8 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task CreateAsync_WhenCalledWithValidBeer_LogsInformation()
         {
+            _beerService.CreateAsync(_beer).Returns(_beer);
+
             await _controller.CreateAsync(_beer);
 
             _logger.Received(2).Information(Arg.Any<string>());

@@ -1,46 +1,41 @@
-﻿using System;
+﻿using HopHubApi.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using HopHubApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace HopHubApi.Repositories
 {
     public class ReviewRepository : IReviewRepository
     {
-        private readonly ApiContext _context;
+        private readonly IHopHubDatabase _context;
 
-        public ReviewRepository(ApiContext context)
+        public ReviewRepository(IHopHubDatabase context)
         {
             _context = context;
         }
 
         public async Task<List<Review>> GetAllAsync()
         {
-            return await _context.Reviews.ToListAsync();
+            return await _context.GetAllReviewsAsync();
         }
 
         public async Task<Review> GetByIdAsync(int id)
         {
-            return await _context.Reviews.FindAsync(id);
+            return await _context.GetReviewByIdAsync(id);
         }
 
         public async Task CreateAsync(Review review)
         {
-            _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
+            await _context.CreateReviewAsync(review);
         }
 
         public async Task<List<Review>> GetByBeerIdAsync(int id)
         {
-            return await _context.Reviews.Where(x => x.BeerId == id).ToListAsync();
+            return await _context.GetReviewsByBeerIdAsync(id);
         }
 
         public async Task DeleteAsync(Review review)
         {
-            _context.Reviews.Remove(review);
-            await _context.SaveChangesAsync();
+            await _context.DeleteReviewAsync(review);
         }
     }
 }

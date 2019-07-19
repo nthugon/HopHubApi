@@ -41,7 +41,7 @@ namespace HopHubApi
             // SQL SERVER EXPRESS ON MY MACHINE
 
             var connString = @"Server=.\SQLEXPRESS;Database=HopHubDB;Trusted_Connection=True;";
-            services.AddDbContext<ApiContext>(options => options.UseSqlServer(connString))
+            services.AddDbContext<IHopHubDatabase, ApiContext>(options => options.UseSqlServer(connString))
                     .AddTransient<IBeerRepository, BeerRepository>()
                     .AddTransient<IBeerService, BeerService>()
                     .AddTransient<IReviewService, ReviewService>()

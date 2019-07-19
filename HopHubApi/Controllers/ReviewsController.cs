@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HopHubApi.Models;
-using HopHubApi.Repositories;
+﻿using HopHubApi.Models;
 using HopHubApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HopHubApi.Controllers
 {
