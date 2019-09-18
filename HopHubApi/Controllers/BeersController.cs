@@ -13,8 +13,7 @@ namespace HopHubApi.Controllers
     /// Handles CRUD requests related to Beers.
     /// </summary>
     [Route("api/[controller]")]
-    // composed without [ApiController] attribute, so we must use binding source attributes and model validation
-    // using CreatedAtRoute for endpoint must be named
+    // composed without [ApiController] attribute, so we must use binding source attributes and model validation   
 
     // disable warning for unused var
     #pragma warning disable CS0168 
@@ -45,7 +44,7 @@ namespace HopHubApi.Controllers
         {
             try
             {
-                _logger.Information("Getting all beers.");
+                _logger.Information("Received request to get all beers.");
                 return await _beerService.GetAllAsync();
             }
             catch (Exception ex)
@@ -84,6 +83,7 @@ namespace HopHubApi.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
+        // endpoint is named to use CreatedAtRoute
         [HttpGet("{id}", Name = "GetBeer")]
         public async Task<ActionResult<Beer>> GetByIdAsync([FromRoute]int id)
         {
@@ -123,12 +123,11 @@ namespace HopHubApi.Controllers
 
             try
             {
-                _logger.Information($"Creating beer with name: {beer.Name}.");
-                // uses return from db to send in the response
+                _logger.Information($"Creating beer with name: {beer.Name}.");                
                 beer = await _beerService.CreateAsync(beer);
                 _logger.Information($"Successfully created beer with name: {beer.Name}.");
-                return Created($"api/beers/{beer.BeerId}", beer);
-
+                // uses return from db to send in the response; refers to named endpoint
+                return CreatedAtRoute("GetBeer", new {id = beer.BeerId}, beer);
             }
             catch (Exception ex)
             {

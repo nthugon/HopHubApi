@@ -2,19 +2,23 @@ using HopHubApi.Models;
 using HopHubApi.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace HopHubApi.Services
 {
     public class BeerService : IBeerService
     {
         private readonly IBeerRepository _beerRepository;
+        private readonly ILogger _logger;
 
-        public BeerService(IBeerRepository beerRepository)
+        public BeerService(IBeerRepository beerRepository, ILogger logger)
         {
             _beerRepository = beerRepository;
+            _logger = logger;
         }
         public async Task<List<Beer>> GetAllAsync()
         {
+            _logger.Information("Processing request to get all beers.");
             return await _beerRepository.GetAllAsync();    
         }
 
