@@ -68,7 +68,7 @@ namespace HopHubApi.Controllers
             try
             {
                 await _reviewService.CreateAsync(review);
-                return CreatedAtRoute(nameof(GetByIdAsync), new { id = review.ReviewId }, review);
+                return Created($"api/reviews/{review.ReviewId}", review);
             }
             catch (Exception ex)
             {
