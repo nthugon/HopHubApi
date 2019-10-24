@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  hophubapi:
+    image: ${DOCKER_REGISTRY-}hophubapi
+    container_name: "hophubapi"
+    build:
+      context: .
+      dockerfile: HopHubApi/Dockerfile
