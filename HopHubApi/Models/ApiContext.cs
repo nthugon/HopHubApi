@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace HopHubApi.Models
@@ -10,12 +12,37 @@ namespace HopHubApi.Models
         public ApiContext(DbContextOptions<ApiContext> options)
             : base(options)
         {
-            // only use for docker
-            //this.Database.EnsureCreated();
         }
 
         public DbSet<Beer> Beers { get; set; }
         public DbSet<Review> Reviews { get; set; }
+
+        public async Task<bool> CheckDatabaseConnectionAsync()
+        {
+            try
+            {
+                await Beers.AnyAsync();
+                return true;
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+        }
+
+        public void ExecuteDatabaseMigration()
+        {
+            if (!Database.GetPendingMigrations().Any())
+            {
+                return;
+            }
+
+            Database.Migrate();
+        }
 
         public async Task<List<Beer>> GetAllBeersAsync()
         {

@@ -10,6 +10,9 @@ namespace HopHubApi.Models
         DbSet<Beer> Beers { get; set; }
         DbSet<Review> Reviews { get; set; }
 
+        Task<bool> CheckDatabaseConnectionAsync();
+        void ExecuteDatabaseMigration();
+
         Task<List<Beer>> GetAllBeersAsync();
         Task<List<Beer>> GetAllBeersWithReviewsAsync();
         Task<Beer> GetBeerByIdAsync(int id);

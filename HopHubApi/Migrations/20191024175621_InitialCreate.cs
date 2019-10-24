@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HopHubApi.Migrations
 {
-    public partial class InitialCreatePC : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace HopHubApi.Migrations
                 columns: table => new
                 {
                     BeerId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Name = table.Column<string>(nullable: false),
                     Style = table.Column<string>(nullable: false),
                     Brewery = table.Column<string>(nullable: false),
@@ -28,7 +28,7 @@ namespace HopHubApi.Migrations
                 columns: table => new
                 {
                     ReviewId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     DrinkAgain = table.Column<string>(nullable: false),
                     Comments = table.Column<string>(nullable: false),
                     BeerId = table.Column<int>(nullable: false)

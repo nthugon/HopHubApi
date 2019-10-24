@@ -56,5 +56,40 @@
             </summary>
             <param name="id">Uniuque indentifier of the Beer.</param>
         </member>
+        <member name="T:HopHubApi.Startup">
+            <summary>
+            Configures services and the app's request pipeline.
+            </summary>
+        </member>
+        <member name="M:HopHubApi.Startup.#ctor(Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:HopHubApi.Startup"/> class.
+            </summary>
+            <param name="environment">Hosting Env</param>
+        </member>
+        <member name="P:HopHubApi.Startup.Configuration">
+            <summary>
+            Gets a set of key/value application configuration properties.
+            </summary>
+        </member>
+        <member name="P:HopHubApi.Startup.HostingEnvironment">
+            <summary>
+            Gets the hosting environment.
+            </summary>
+        </member>
+        <member name="M:HopHubApi.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        </member>
+        <member name="M:HopHubApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app">Class that defines the mechanisms to configure and application's request pipeline.</param>
+            <param name="env">Provides information about the web hosting environment an application is running in.</param>
+            <param name="loggerFactory">Used to configure the logging system.</param>
+        </member>
     </members>
 </doc>
