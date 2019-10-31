@@ -33,7 +33,7 @@
             <summary>
             Gets requested Beer by Id.
             </summary>
-            <param name="id">Uniuque indentifier of the Beer.</param>
+            <param name="id">Unique identifier of the Beer.</param>
             <returns>The Beer requested.</returns>
         </member>
         <member name="M:HopHubApi.Controllers.BeersController.CreateAsync(HopHubApi.Models.Beer)">
@@ -47,7 +47,7 @@
             <summary>
             Updates the properties of a Beer.
             </summary>
-            <param name="id">Uniuque indentifier of the Beer.</param>
+            <param name="id">Unique identifier of the Beer.</param>
             <param name="beerUpdate">Model representing the Beer's properties.</param>
         </member>
         <member name="M:HopHubApi.Controllers.BeersController.DeleteAsync(System.Int32)">
@@ -55,6 +55,188 @@
             Deletes a Beer.
             </summary>
             <param name="id">Uniuque indentifier of the Beer.</param>
+        </member>
+        <member name="T:HopHubApi.Models.ApiContext">
+            <inheritdoc cref="T:HopHubApi.Models.IHopHubDatabase" />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{HopHubApi.Models.ApiContext})">
+            <inheritdoc />
+        </member>
+        <member name="P:HopHubApi.Models.ApiContext.Beers">
+            <inheritdoc />
+        </member>
+        <member name="P:HopHubApi.Models.ApiContext.Reviews">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.CheckDatabaseConnectionAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.ExecuteDatabaseMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.GetAllBeersAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.GetAllBeersWithReviewsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.GetBeerByIdAsync(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.CreateBeerAsync(HopHubApi.Models.Beer)">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.UpdateBeerAsync(HopHubApi.Models.Beer)">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.DeleteBeerAsync(HopHubApi.Models.Beer)">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.GetAllReviewsAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.GetReviewByIdAsync(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.GetReviewsByBeerIdAsync(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.CreateReviewAsync(HopHubApi.Models.Review)">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.UpdateReviewAsync(HopHubApi.Models.Review)">
+            <inheritdoc />
+        </member>
+        <member name="M:HopHubApi.Models.ApiContext.DeleteReviewAsync(HopHubApi.Models.Review)">
+            <inheritdoc />
+        </member>
+        <member name="T:HopHubApi.Models.IHopHubDatabase">
+            <summary>
+            Interface for interacting with the hop hub database.
+            </summary>
+        </member>
+        <member name="P:HopHubApi.Models.IHopHubDatabase.Beers">
+            <summary>
+            Gets or sets Beers DbSet.
+            </summary>
+        </member>
+        <member name="P:HopHubApi.Models.IHopHubDatabase.Reviews">
+            <summary>
+            Gets or sets Reviews DbSet.
+            </summary>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.CheckDatabaseConnectionAsync">
+            <summary>
+            Checks database connection.
+            </summary>
+            <returns>
+            Returns <see langword="true"/> if the database connection is okay; otherwise
+            returns <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.ExecuteDatabaseMigration">
+            <summary>
+            Executes the database migration scripts.
+            </summary>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.GetAllBeersAsync">
+            <summary>
+            Method for getting all Beer records in Beers DbSet.
+            </summary>
+            <returns>List of all Beer records in Beers DbSet.</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.GetAllBeersWithReviewsAsync">
+            <summary>
+            Method for getting all Beer records and their accompanying Review records from the Beers DbSet and Reviews DbSet.
+            </summary>
+            <returns>List of all Beer records and their accompanying Review records from the Beers DbSet and Reviews DbSet.</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.GetBeerByIdAsync(System.Int32)">
+            <summary>
+            Method for getting a Beer by its unique identifier from the Beers DbSet.
+            </summary>
+            <param name="id">Unique identifier of the Beer to get.</param>
+            <returns>Beer read from Beers DbSet.</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.CreateBeerAsync(HopHubApi.Models.Beer)">
+            <summary>
+            Method for creating a Beer in the Beers DbSet. 
+            </summary>
+            <param name="beer">Beer DTO.</param>
+            <returns>Beer created in and read from the Beers DbSet.</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.UpdateBeerAsync(HopHubApi.Models.Beer)">
+            <summary>
+            Method for updating a Beer in the Beers DbSet.
+            </summary>
+            <param name="beer">Beer DTO containing changes.</param>
+            <returns>Task</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.DeleteBeerAsync(HopHubApi.Models.Beer)">
+            <summary>
+            Method for deleting a Beer in the Beers DbSet.
+            </summary>
+            <param name="beer">Beer DTO.</param>
+            <returns>Task</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.GetAllReviewsAsync">
+            <summary>
+            Method for getting all Review records in Reviews DbSet.
+            </summary>
+            <returns>List of all Review records in Reviews DbSet.</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.GetReviewByIdAsync(System.Int32)">
+            <summary>
+            Method for getting a Review by its unique identifier from the Reviews DbSet.
+            </summary>
+            <param name="id">Unique identifier of the Review to get.</param>
+            <returns>Review read from Reviews DbSet.</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.GetReviewsByBeerIdAsync(System.Int32)">
+            <summary>
+            Method for getting Review records by the BeerId the record is associated with.
+            </summary>
+            <param name="id">Unique identifier of the Beer the Review record is associated with.</param>
+            <returns>List of Review records in the Reviews DbSet that contain the BeerId.</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.CreateReviewAsync(HopHubApi.Models.Review)">
+            <summary>
+            Method for creating a Review in the Reviews DbSet. 
+            </summary>
+            <param name="review">Review DTO.</param>
+            <returns>Review created in and read from the Reviews DbSet.</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.UpdateReviewAsync(HopHubApi.Models.Review)">
+            <summary>
+            Method for updating a Review in the Reviews DbSet.
+            </summary>
+            <param name="review">Review DTO containing changes.</param>
+            <returns>Task</returns>
+        </member>
+        <member name="M:HopHubApi.Models.IHopHubDatabase.DeleteReviewAsync(HopHubApi.Models.Review)">
+            <summary>
+            Method for deleting a Review in the Reviews DbSet.
+            </summary>
+            <param name="review">Review DTO.</param>
+            <returns>Task</returns>
+        </member>
+        <member name="T:HopHubApi.Program">
+            <summary>
+            Program class of application.
+            </summary>
+        </member>
+        <member name="M:HopHubApi.Program.Main(System.String[])">
+            <summary>
+            Main method of program.
+            </summary>
+            <param name="args">Main method arguments.</param>
+        </member>
+        <member name="M:HopHubApi.Program.CreateWebHostBuilder(System.String[])">
+            <summary>
+            Creates and instance of IWebHostBuilder.
+            </summary>
+            <param name="args">Arguments passed down from Main.</param>
+            <returns>An instance of IWebHostBuilder.</returns>
         </member>
         <member name="T:HopHubApi.Startup">
             <summary>

@@ -78,7 +78,7 @@ namespace HopHubApi.Controllers
         /// <summary>
         /// Gets requested Beer by Id.
         /// </summary>
-        /// <param name="id">Uniuque indentifier of the Beer.</param>
+        /// <param name="id">Unique identifier of the Beer.</param>
         /// <returns>The Beer requested.</returns>
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -139,7 +139,7 @@ namespace HopHubApi.Controllers
         /// <summary>
         /// Updates the properties of a Beer.
         /// </summary>
-        /// <param name="id">Uniuque indentifier of the Beer.</param>
+        /// <param name="id">Unique identifier of the Beer.</param>
         /// <param name="beerUpdate">Model representing the Beer's properties.</param>
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]

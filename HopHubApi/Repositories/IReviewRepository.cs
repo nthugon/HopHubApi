@@ -10,8 +10,9 @@ namespace HopHubApi.Repositories
     {
         Task<List<Review>> GetAllAsync();
         Task<Review> GetByIdAsync(int id);
-        Task CreateAsync(Review review);
         Task<List<Review>> GetByBeerIdAsync(int id);
+        Task CreateAsync(Review review);
+        Task UpdateAsync(Review review);
         Task DeleteAsync(Review review);
     }
 }

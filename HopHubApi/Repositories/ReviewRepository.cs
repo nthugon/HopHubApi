@@ -23,14 +23,19 @@ namespace HopHubApi.Repositories
             return await _context.GetReviewByIdAsync(id);
         }
 
+        public async Task<List<Review>> GetByBeerIdAsync(int id)
+        {
+            return await _context.GetReviewsByBeerIdAsync(id);
+        }
+
         public async Task CreateAsync(Review review)
         {
             await _context.CreateReviewAsync(review);
         }
 
-        public async Task<List<Review>> GetByBeerIdAsync(int id)
+        public async Task UpdateAsync(Review review)
         {
-            return await _context.GetReviewsByBeerIdAsync(id);
+            await _context.UpdateReviewAsync(review);
         }
 
         public async Task DeleteAsync(Review review)

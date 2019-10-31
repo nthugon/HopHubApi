@@ -26,18 +26,40 @@ namespace HopHubApi.Services
             return await _reviewRepository.GetByIdAsync(id);
         }
 
-        public async Task CreateAsync(Review review)
-        {
-            await _reviewRepository.CreateAsync(review);
-        }
-
         public async Task<List<Review>> GetByBeerIdAsync(int id)
         {
             return await _reviewRepository.GetByBeerIdAsync(id);
         }
 
-        public async Task DeleteAsync(Review review)
+        public async Task CreateAsync(Review review)
         {
+            await _reviewRepository.CreateAsync(review);
+        }
+
+        public async Task UpdateAsync(int id, Review reviewUpdate)
+        {
+            var review = await _reviewRepository.GetByIdAsync(id);
+
+            if (review == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            review.DrinkAgain = reviewUpdate.DrinkAgain;
+            review.Comments = reviewUpdate.Comments;
+
+            await _reviewRepository.UpdateAsync(review);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var review = await _reviewRepository.GetByIdAsync(id);
+
+            if (review == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
             await _reviewRepository.DeleteAsync(review);
         }
     }
