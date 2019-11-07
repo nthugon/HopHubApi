@@ -55,7 +55,7 @@ namespace HopHubApi.Controllers
         }
 
         /// <summary>
-        /// Gets all of the the Beers and their Reviews.
+        /// Gets all of the Beers and their Reviews.
         /// </summary>
         /// <returns>List of Beers containing their reviews.</returns>
         [ProducesResponseType(200)]

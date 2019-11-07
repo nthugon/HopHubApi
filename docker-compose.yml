@@ -9,7 +9,7 @@ services:
       dockerfile: HopHubApi/Dockerfile
   postgres:
     image: "postgres:11"
-    container_name: "postgres"
+    container_name: "hophubpostgres"
     environment:
       - POSTGRES_USER:'postgres'
       - POSTGRES_PASSWORD:'password'
@@ -21,7 +21,7 @@ services:
       - db_data:/var/lib/postgresql/data
   pgadmin:
     image: dpage/pgadmin4
-    container_name: "pgadmin"
+    container_name: "hophubpgadmin"
     links:
       - postgres
     depends_on:

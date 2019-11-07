@@ -3,11 +3,11 @@
 set -o xtrace
 
 docker stop hophubapi
-docker stop pgadmin
-docker stop postgres
+docker stop hophubpgadmin
+docker stop hophubpostgres
 
 docker rm hophubapi
-docker rm pgadmin
-docker rm postgres
+docker rm hophubpgadmin
+docker rm hophubpostgres
 
 docker volume prune -f
