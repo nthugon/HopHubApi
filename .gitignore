@@ -1,6 +1,8 @@
 # Autosave files
 *~
 
+.env
+
 # build
 [Oo]bj/
 [Bb]in/
