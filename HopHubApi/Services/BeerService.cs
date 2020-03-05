@@ -44,7 +44,7 @@ namespace HopHubApi.Services
             return await _beerRepository.CreateAsync(beer);
         }
 
-        public async Task UpdateAsync(int id, Beer beerUpdate)
+        public async Task UpdateAsync(int id, BeerRequest beerUpdate)
         {
             var beer = await _beerRepository.GetByIdAsync(id);
 
@@ -53,10 +53,10 @@ namespace HopHubApi.Services
                 throw new KeyNotFoundException();
             }
 
-            beer.Name = beerUpdate.Name;
-            beer.Style = beerUpdate.Style;
-            beer.Brewery = beerUpdate.Brewery;
-            beer.Abv = beerUpdate.Abv;
+            beer.Name = string.IsNullOrEmpty(beerUpdate.Name) ? beer.Name : beerUpdate.Name;
+            beer.Style = string.IsNullOrEmpty(beerUpdate.Style) ? beer.Style : beerUpdate.Style;
+            beer.Brewery = string.IsNullOrEmpty(beerUpdate.Brewery) ? beer.Brewery : beerUpdate.Brewery;
+            beer.Abv = (beerUpdate.Abv > 0) ? beerUpdate.Abv : beer.Abv;
 
             await _beerRepository.UpdateAsync(beer);
         }

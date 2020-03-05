@@ -107,13 +107,13 @@ namespace HopHubApi.Controllers
         /// <summary>
         /// Creates a Beer from the information sent in the request.
         /// </summary>
-        /// <param name="beer">Model representing the Beer's properties.</param>
+        /// <param name="createBeerRequest">Model representing the Beer's properties.</param>
         /// <returns>The Beer created.</returns>
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [HttpPost]
-        public async Task<ActionResult<Beer>> CreateAsync([FromBody]Beer beer)
+        public async Task<ActionResult<Beer>> CreateAsync([FromBody]BeerRequest createBeerRequest)
         {
             if (!ModelState.IsValid)
             {
@@ -123,15 +123,22 @@ namespace HopHubApi.Controllers
 
             try
             {
-                _logger.Information($"Creating beer with name: {beer.Name}.");                
-                beer = await _beerService.CreateAsync(beer);
-                _logger.Information($"Successfully created beer with name: {beer.Name}.");
+                _logger.Information($"Creating beer with name: {createBeerRequest.Name}.");
+                var beer = new Beer
+                {
+                    Name = createBeerRequest.Name,
+                    Style = createBeerRequest.Style,
+                    Brewery = createBeerRequest.Brewery,
+                    Abv = createBeerRequest.Abv
+                };
+                var createdBeer = await _beerService.CreateAsync(beer);
+                _logger.Information($"Successfully created beer with name: {createdBeer.Name}.");
                 // uses return from db to send in the response; refers to named endpoint
-                return CreatedAtRoute("GetBeer", new {id = beer.BeerId}, beer);
+                return CreatedAtRoute("GetBeer", new {id = createdBeer.BeerId}, createdBeer);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, $"Request to create beer with name: {beer.Name} failed.");
+                _logger.Error(ex, $"Request to create beer with name: {createBeerRequest.Name} failed.");
                 return StatusCode(500);
             }
         }
@@ -140,13 +147,13 @@ namespace HopHubApi.Controllers
         /// Updates the properties of a Beer.
         /// </summary>
         /// <param name="id">Unique identifier of the Beer.</param>
-        /// <param name="beerUpdate">Model representing the Beer's properties.</param>
+        /// <param name="updateBeerRequest">Model representing the Beer's properties.</param>
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAsync(int id, [FromBody]Beer beerUpdate)
+        public async Task<ActionResult> UpdateAsync(int id, [FromBody]BeerRequest updateBeerRequest)
         {
             if (!ModelState.IsValid)
             {
@@ -157,7 +164,7 @@ namespace HopHubApi.Controllers
             try
             {
                 _logger.Information($"Updating beer with id: {id}.");
-                await _beerService.UpdateAsync(id, beerUpdate);
+                await _beerService.UpdateAsync(id, updateBeerRequest);
                 _logger.Information($"Successfully updated beer with id: {id}.");
                 return NoContent();
             }
@@ -176,7 +183,7 @@ namespace HopHubApi.Controllers
         /// <summary>
         /// Deletes a Beer.
         /// </summary>
-        /// <param name="id">Uniuque indentifier of the Beer.</param>
+        /// <param name="id">Unique identifier of the Beer.</param>
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]

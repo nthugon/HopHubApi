@@ -20,14 +20,8 @@ namespace HopHubApi.Tests.Controllers
         private IBeerService _beerService;
         private ILogger _logger;
         private BeersController _controller;
-        private readonly Beer _beer = new Beer
-        {
-            BeerId = 1,
-            Name = "Beer Name",
-            Brewery = "Test Brewery",
-            Style = "Test Beer",
-            Abv = 4.5m
-        };
+        private BeerRequest _beerRequest;
+        private Beer _beer;
 
         [SetUp]
         public void Setup()
@@ -35,6 +29,21 @@ namespace HopHubApi.Tests.Controllers
             _beerService = Substitute.For<IBeerService>();
             _logger = Substitute.For<ILogger>();
             _controller = new BeersController(_beerService, _logger);
+            _beerRequest = new BeerRequest
+            {
+                Name = "Beer Name",
+                Brewery = "Test Brewery",
+                Style = "Test Beer",
+                Abv = 4.5m
+            };
+            _beer = new Beer
+            {
+                BeerId = 1,
+                Name = _beerRequest.Name,
+                Brewery = _beerRequest.Brewery,
+                Style = _beerRequest.Style,
+                Abv = _beerRequest.Abv
+            };
         }
 
         [Test]
@@ -172,19 +181,21 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task CreateAsync_WhenCalledWithValidBeer_CallsBeerServiceCreateAsync()
         {
-            _beerService.CreateAsync(_beer).Returns(_beer);
+            await _controller.CreateAsync(_beerRequest);
 
-            await _controller.CreateAsync(_beer);
-
-            await _beerService.Received(1).CreateAsync(_beer);
+            await _beerService.Received(1).CreateAsync(Arg.Is<Beer>(x => 
+                x.Name == _beer.Name &&
+                x.Style == _beer.Style &&
+                x.Brewery == _beer.Brewery &&
+                x.Abv == _beer.Abv));
         }
 
         [Test]
         public async Task CreateAsync_WhenCalledWithValidBeer_LogsInformation()
         {
-            _beerService.CreateAsync(_beer).Returns(_beer);
+            _beerService.CreateAsync(Arg.Any<Beer>()).Returns(_beer);
 
-            await _controller.CreateAsync(_beer);
+            await _controller.CreateAsync(_beerRequest);
 
             _logger.Received(2).Information(Arg.Any<string>());
         }
@@ -194,7 +205,7 @@ namespace HopHubApi.Tests.Controllers
         {
             _beerService.CreateAsync(_beer).Throws(new Exception());
 
-            var response = await _controller.CreateAsync(_beer);
+            var response = await _controller.CreateAsync(_beerRequest);
             var statusCodeResult = response.Result as StatusCodeResult;
 
             Assert.AreEqual((HttpStatusCode)statusCodeResult.StatusCode, HttpStatusCode.InternalServerError);
@@ -205,7 +216,7 @@ namespace HopHubApi.Tests.Controllers
         {
             _beerService.CreateAsync(_beer).Throws(new Exception());
 
-            await _controller.CreateAsync(_beer);
+            await _controller.CreateAsync(_beerRequest);
 
             _logger.Received(1).Error(Arg.Any<Exception>() ,Arg.Any<string>());
         }
@@ -213,15 +224,15 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task UpdateAsync_WhenCalledWithValidBeer_CallsBeerServiceUpdateAsync()
         {
-            await _controller.UpdateAsync(_beer.BeerId, _beer);
+            await _controller.UpdateAsync(_beer.BeerId, _beerRequest);
 
-            await _beerService.Received(1).UpdateAsync(_beer.BeerId, _beer);
+            await _beerService.Received(1).UpdateAsync(_beer.BeerId, _beerRequest);
         }
 
         [Test]
         public async Task UpdateAsync_WhenCalledWithValidBeer_LogInformation()
         {
-            await _controller.UpdateAsync(_beer.BeerId, _beer);
+            await _controller.UpdateAsync(_beer.BeerId, _beerRequest);
 
             _logger.Received(2).Information(Arg.Any<string>());
         }
@@ -229,9 +240,9 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task UpdateAsync_WhenCalledWithInvalidBeer_Returns404()
         {
-            _beerService.UpdateAsync(_beer.BeerId, _beer).Throws(new KeyNotFoundException());
+            _beerService.UpdateAsync(_beer.BeerId, _beerRequest).Throws(new KeyNotFoundException());
 
-            var response = await _controller.UpdateAsync(_beer.BeerId, _beer);
+            var response = await _controller.UpdateAsync(_beer.BeerId, _beerRequest);
             var statusCodeResult = response as StatusCodeResult;
 
             Assert.AreEqual((HttpStatusCode)statusCodeResult.StatusCode, HttpStatusCode.NotFound);
@@ -240,9 +251,9 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task UpdateAsync_WhenCalledWithInvalidBeer_LogsWarning()
         {
-            _beerService.UpdateAsync(_beer.BeerId, _beer).Throws(new KeyNotFoundException());
+            _beerService.UpdateAsync(_beer.BeerId, _beerRequest).Throws(new KeyNotFoundException());
 
-            await _controller.UpdateAsync(_beer.BeerId, _beer);
+            await _controller.UpdateAsync(_beer.BeerId, _beerRequest);
 
             _logger.Received(1).Warning(Arg.Any<KeyNotFoundException>(), Arg.Any<string>());
         }
@@ -250,9 +261,9 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task UpdateAsync_WhenFailed_Returns500()
         {
-            _beerService.UpdateAsync(_beer.BeerId, _beer).Throws(new Exception());
+            _beerService.UpdateAsync(_beer.BeerId, _beerRequest).Throws(new Exception());
 
-            var response = await _controller.UpdateAsync(_beer.BeerId, _beer);
+            var response = await _controller.UpdateAsync(_beer.BeerId, _beerRequest);
             var statusCodeResult = response as StatusCodeResult;
 
             Assert.AreEqual((HttpStatusCode)statusCodeResult.StatusCode, HttpStatusCode.InternalServerError);
@@ -261,9 +272,9 @@ namespace HopHubApi.Tests.Controllers
         [Test]
         public async Task UpdateAsync_WhenFailed_LogsError()
         {
-            _beerService.UpdateAsync(_beer.BeerId, _beer).Throws(new Exception());
+            _beerService.UpdateAsync(_beer.BeerId, _beerRequest).Throws(new Exception());
 
-            await _controller.UpdateAsync(_beer.BeerId, _beer);
+            await _controller.UpdateAsync(_beer.BeerId, _beerRequest);
 
             _logger.Received(1).Error(Arg.Any<Exception>(), Arg.Any<string>());
         }
